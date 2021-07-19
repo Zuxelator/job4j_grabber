@@ -1,0 +1,2 @@
+[![Build Status](https://travis-ci.com/Zuxelator/job4j_grabber.svg?branch=main)](https://travis-ci.com/Zuxelator/job4j_grabber)
+[![codecov](https://codecov.io/gh/Zuxelator/job4j_grabber/branch/master/graph/badge.svg?token=BKQ79LEJBE)](https://codecov.io/gh/Zuxelator/job4j_grabber)
