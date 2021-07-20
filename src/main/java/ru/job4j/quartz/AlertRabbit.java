@@ -2,7 +2,6 @@ package ru.job4j.quartz;
 
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
-import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -33,13 +32,7 @@ public class AlertRabbit {
 }
 
     public static int getInterval() {
-        Properties properties = new Properties();
-        try {
-            properties.load(AlertRabbit.class.getClassLoader().getResourceAsStream("rabbit.properties"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return Integer.parseInt(properties.getProperty("rabbit.interval"));
+        return Integer.parseInt(cfg.getProperty("rabbit.interval"));
     }
 
     public static void main(String[] args) {
@@ -77,9 +70,8 @@ public class AlertRabbit {
         public void execute(JobExecutionContext context) {
             System.out.println("Rabbit runs here ...");
             Connection connection = (Connection) context.getJobDetail().getJobDataMap().get("connection");
-            try {
-                PreparedStatement statement =
-                        connection.prepareStatement("insert into rabbit (created_date) values (?);");
+            try (PreparedStatement statement =
+                         connection.prepareStatement("insert into rabbit (created_date) values (?);")) {
                 statement.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
                 statement.execute();
             } catch (SQLException throwables) {
