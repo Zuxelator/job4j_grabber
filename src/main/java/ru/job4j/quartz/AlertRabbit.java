@@ -36,8 +36,7 @@ public class AlertRabbit {
     }
 
     public static void main(String[] args) {
-        try {
-            Connection connection = getConnection();
+        try (Connection connection = getConnection()) {
             Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
             scheduler.start();
             JobDataMap data = new JobDataMap();
