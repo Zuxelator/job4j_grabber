@@ -5,6 +5,10 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 public class SqlRuParse {
     public static void main(String[] args) throws Exception {
         for (int i = 1; i <= 5; i++) {
@@ -21,4 +25,18 @@ public class SqlRuParse {
             }
         }
     }
+    public static Map<String, String> getDetails(String url) throws IOException {
+        Map<String, String> map = new HashMap<>();
+        Document doc = Jsoup.connect(url).get();
+        Elements tables = doc.select(".msgTable");
+        Element table = tables.first();
+        Elements rows = table.select("tr");
+        String description = rows.get(1).child(1).text();
+        String[] split = rows.get(2).child(0).text().split(" \\[");
+        String created = split[0];
+        map.put("description", description);
+        map.put("created", created);
+        return map;
+    }
+
 }
