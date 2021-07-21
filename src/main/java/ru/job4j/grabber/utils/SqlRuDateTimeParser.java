@@ -39,20 +39,34 @@ public class SqlRuDateTimeParser implements DateTimeParser {
     }
 
     private int getMonth(String month) {
-        return switch (month) {
-            case "янв" -> 1;
-            case "фев" -> 2;
-            case "мар" -> 3;
-            case "апр" -> 4;
-            case "май" -> 5;
-            case "июн" -> 6;
-            case "июл" -> 7;
-            case "авг" -> 8;
-            case "сен" -> 9;
-            case "окт" -> 10;
-            case "ноя" -> 11;
-            case "дек" -> 12;
-            default -> 0;
-        };
+        int rsl;
+         switch (month) {
+             case "янв" : rsl = 1;
+             break;
+             case "фев" : rsl = 2;
+             break;
+             case "мар" : rsl = 3;
+             break;
+             case "апр" : rsl = 4;
+             break;
+             case "май" : rsl = 5;
+             break;
+             case "июн" : rsl = 6;
+             break;
+             case "июл" : rsl = 7;
+             break;
+             case "авг" : rsl = 8;
+             break;
+             case "сен" : rsl = 9;
+             break;
+             case "окт" : rsl = 10;
+             break;
+             case "ноя" : rsl = 11;
+             break;
+             case "дек" : rsl = 12;
+             break;
+             default : rsl = 0;
+        }
+        return rsl;
     }
 }
