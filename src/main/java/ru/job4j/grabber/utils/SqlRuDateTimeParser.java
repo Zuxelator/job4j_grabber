@@ -5,8 +5,28 @@ import ru.job4j.grabber.utils.DateTimeParser;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.HashMap;
+import java.util.Map;
+
+import static java.util.Map.entry;
 
 public class SqlRuDateTimeParser implements DateTimeParser {
+
+    private static final Map<String, Integer> MONTHS = Map.ofEntries(
+            entry("янв", 1),
+            entry("фев", 2),
+            entry("мар", 3),
+            entry("апр", 4),
+            entry("май", 5),
+            entry("июн", 6),
+            entry("июл", 7),
+            entry("авг", 8),
+            entry("сен", 9),
+            entry("окт", 10),
+            entry("ноя", 11),
+            entry("дек", 12)
+    );
+
     @Override
     public LocalDateTime parse(String parse) {
         LocalDate date = getLocalDate(parse);
@@ -30,44 +50,12 @@ public class SqlRuDateTimeParser implements DateTimeParser {
         if (parse.matches("^\\d{1,2}.*")) {
             String[] parts = date[0].split(" ");
             year = Integer.parseInt(parts[2]) + 2000;
-            month = getMonth(parts[1]);
+            month = MONTHS.get(parts[1]);
             dayOfMonth = Integer.parseInt(parts[0]);
             rsl = LocalDate.of(year, month, dayOfMonth);
         } else {
             LocalDateTime ldt = date[0].equals("сегодня") ? LocalDateTime.now() : LocalDateTime.now().minusDays(1);
             rsl = ldt.toLocalDate();
-        }
-        return rsl;
-    }
-
-    private int getMonth(String month) {
-        int rsl;
-         switch (month) {
-             case "янв" : rsl = 1;
-             break;
-             case "фев" : rsl = 2;
-             break;
-             case "мар" : rsl = 3;
-             break;
-             case "апр" : rsl = 4;
-             break;
-             case "май" : rsl = 5;
-             break;
-             case "июн" : rsl = 6;
-             break;
-             case "июл" : rsl = 7;
-             break;
-             case "авг" : rsl = 8;
-             break;
-             case "сен" : rsl = 9;
-             break;
-             case "окт" : rsl = 10;
-             break;
-             case "ноя" : rsl = 11;
-             break;
-             case "дек" : rsl = 12;
-             break;
-             default : rsl = 0;
         }
         return rsl;
     }
