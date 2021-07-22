@@ -71,13 +71,12 @@ public class Post {
         return id == post.id
                 && title.equals(post.title)
                 && link.equals(post.link)
-                && description.equals(post.description)
                 && created.equals(post.created);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, link, description, created);
+        return Objects.hash(id, title, link, created);
     }
 
     @Override
