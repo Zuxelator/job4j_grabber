@@ -51,7 +51,7 @@ public class SqlRuParse implements Parse {
         for (int i = 1; i <= 5; i++) {
             Document doc = null;
             try {
-                doc = Jsoup.connect("https://www.sql.ru/forum/job-offers/" + i).get();
+                doc = Jsoup.connect(link + i).get();
             } catch (IOException e) {
                 e.printStackTrace();
             }
