@@ -1,8 +1,5 @@
 package ru.job4j.cache;
 
-import ru.job4j.grabber.Parse;
-
-import java.lang.ref.Reference;
 import java.lang.ref.SoftReference;
 import java.util.HashMap;
 import java.util.Map;
