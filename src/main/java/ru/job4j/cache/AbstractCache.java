@@ -1,9 +1,8 @@
 package ru.job4j.cache;
 
-import org.w3c.dom.ls.LSOutput;
+import ru.job4j.grabber.Parse;
 
 import java.lang.ref.Reference;
-import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,11 +19,15 @@ public abstract class AbstractCache<K, V> {
     public V get(K key) {
         SoftReference<V> softReference = cache.get(key);
         V value;
-        if (softReference == null || softReference.get() == null) {
+        if (softReference == null) {
             value = load(key);
             cache.put(key, new SoftReference<>(value));
         } else {
-            value = cache.get(key).get();
+            value = softReference.get();
+            if (value == null) {
+                value = load(key);
+                cache.put(key, new SoftReference<>(value));
+            }
         }
         return value;
     }
