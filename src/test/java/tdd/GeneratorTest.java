@@ -1,3 +1,4 @@
+/*
 package tdd;
 
 import org.junit.Test;
@@ -42,3 +43,4 @@ public class GeneratorTest {
         String rsl = "I am a Petr Arsentev, Who are you? ";
     }
 }
+*/

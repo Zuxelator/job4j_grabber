@@ -1,3 +1,4 @@
+/*
 package tdd;
 
 import static org.junit.Assert.assertThat;
@@ -36,4 +37,4 @@ public class CinemaTest {
         cinema.add(session);
         assertThat(session, is(cinema.find(x -> true).get(0)));
     }
-}
+}*/
