@@ -1,4 +1,3 @@
-/*
 package tdd;
 
 import static org.junit.Assert.assertThat;
@@ -8,7 +7,6 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.List;
 
 public class CinemaTest {
 
@@ -37,4 +35,33 @@ public class CinemaTest {
         cinema.add(session);
         assertThat(session, is(cinema.find(x -> true).get(0)));
     }
-}*/
+
+    @Test (expected = IllegalArgumentException.class)
+    public void spotOccupied() {
+        Account account = new AccountCinema();
+        Cinema cinema = new Cinema3D();
+        Calendar date = Calendar.getInstance();
+        date.set(2020, 10, 10, 23, 00);
+        Ticket ticket = cinema.buy(account, 1, 1, date);
+        Ticket ticket1 = cinema.buy(account, 1, 1, date);
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void invalidSpot() {
+        Account account = new AccountCinema();
+        Cinema cinema = new Cinema3D();
+        Calendar date = Calendar.getInstance();
+        date.set(2020, 10, 10, 23, 00);
+        Ticket ticket = cinema.buy(account, 100, 1, date);
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void invalidDate() {
+        Account account = new AccountCinema();
+        Cinema cinema = new Cinema3D();
+        Calendar date = Calendar.getInstance();
+        date.set(2015, 10, 10, 23, 00);
+        Ticket ticket = cinema.buy(account, 1, 1, date);
+    }
+}
+
