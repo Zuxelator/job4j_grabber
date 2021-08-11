@@ -1,3 +1,4 @@
+/*
 package tdd;
 
 import static org.junit.Assert.assertThat;
@@ -65,3 +66,4 @@ public class CinemaTest {
     }
 }
 
+*/
