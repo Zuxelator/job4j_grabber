@@ -12,7 +12,7 @@ import static org.junit.Assert.assertThat;
 public class MaxMinTest {
 
     @Test
-    public void minTest() {
+    public void maxTest() {
         MaxMin maxMin = new MaxMin();
         List<Model> list = Arrays.asList(new Model(1, "1"),
                 new Model(2, "2"),
@@ -27,7 +27,7 @@ public class MaxMinTest {
     }
 
     @Test
-    public void maxTest() {
+    public void minTest() {
         MaxMin maxMin = new MaxMin();
         List<Model> list = Arrays.asList(new Model(1, "1"),
                 new Model(2, "2"),
