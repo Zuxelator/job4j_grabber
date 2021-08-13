@@ -7,15 +7,21 @@ import java.io.StringWriter;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class XMLReportEngine extends ReportEngine {
+public class XMLReportEngine implements Report {
+
+    private Store store;
 
     public XMLReportEngine(Store store) {
-        super(store);
+        this.store = store;
+    }
+
+    public Store getStore() {
+        return store;
     }
 
     @Override
     public String generate(Predicate<Employee> filter) {
-        List<Employee> list = this.getStore().findBy(em -> true);
+        List<Employee> list = this.getStore().findBy(filter);
         Employees employees = new Employees();
         employees.setList(list);
         String xml = "";
