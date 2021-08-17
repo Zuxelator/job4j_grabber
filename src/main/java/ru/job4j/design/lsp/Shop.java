@@ -23,18 +23,12 @@ public class Shop implements Storage {
     }
 
     @Override
-    public Map<Food, Integer> execute(Map<Food, Integer> tmp) {
-        Map<Food, Integer> tmpMap = new HashMap<>(tmp);
-        for (Map.Entry<Food, Integer> entry : map.entrySet()) {
-            tmpMap.put(entry.getKey(), entry.getValue());
+    public boolean accept(Food food) {
+        double shelfLife = food.getRemainingShelfLife();
+        if (shelfLife > 0 && shelfLife < 25) {
+            food.setDiscount(20);
         }
-        tmpMap.keySet().removeIf(x -> x.getRemainingShelfLife() > 75);
-        map = tmpMap;
-        map.keySet().removeIf(x -> x.getRemainingShelfLife() <= 75 && x.getRemainingShelfLife() > 25);
-        map.keySet().stream()
-                .filter(x -> x.getRemainingShelfLife() > 0 && x.getRemainingShelfLife() <= 25)
-                .forEach(x -> x.setDiscount(20));
-        return tmpMap;
+        return food.getRemainingShelfLife() >= 25 && food.getRemainingShelfLife() < 75;
     }
 
     @Override

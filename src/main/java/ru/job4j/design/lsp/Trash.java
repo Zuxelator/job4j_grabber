@@ -23,13 +23,8 @@ public class Trash implements Storage {
     }
 
     @Override
-    public Map<Food, Integer> execute(Map<Food, Integer> tmp) {
-        Map<Food, Integer> tmpMap = new HashMap<>(tmp);
-        for (Map.Entry<Food, Integer> entry : map.entrySet()) {
-            tmpMap.put(entry.getKey(), entry.getValue());
-        }
-        map = tmpMap;
-        return tmpMap;
+    public boolean accept(Food food) {
+        return food.getRemainingShelfLife() <= 0;
     }
 
     @Override

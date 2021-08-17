@@ -5,6 +5,6 @@ import java.util.Map;
 public interface Storage {
     public void add(Food food);
     public Integer get(Food food);
-    public Map<Food, Integer> execute(Map<Food, Integer> tmp);
+    boolean accept(Food food);
     public Map<Food, Integer> getMap();
 }

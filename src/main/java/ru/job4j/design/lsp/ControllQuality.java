@@ -1,21 +1,25 @@
 package ru.job4j.design.lsp;
 
+import java.util.List;
 import java.util.Map;
 
 public class ControllQuality {
     private Storage storage;
-    private Map<Food, Integer> tmpMap;
+    private List<Storage> storageList;
 
-    public ControllQuality(Storage storage) {
-        this.storage = storage;
+    public ControllQuality(List<Storage> storageList) {
+        this.storageList = storageList;
     }
 
     public void setStorage(Storage storage) {
         this.storage = storage;
     }
 
-    public void execute() {
-        tmpMap = storage.execute(tmpMap);
+    public void distribute(Food food) {
+        for (Storage storage : storageList) {
+            if (storage.accept(food)) {
+                storage.add(food);
+            }
+        }
     }
-
 }

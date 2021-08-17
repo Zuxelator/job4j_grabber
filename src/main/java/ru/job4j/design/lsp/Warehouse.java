@@ -23,11 +23,8 @@ public class Warehouse implements Storage {
     }
 
     @Override
-    public Map<Food, Integer> execute(Map<Food, Integer> tmp) {
-        Map<Food, Integer> tmpMap = new HashMap<>(map);
-        tmpMap.keySet().removeIf(x -> x.getRemainingShelfLife() >= 75);
-        map.keySet().removeIf(x -> x.getRemainingShelfLife() < 75);
-        return tmpMap;
+    public boolean accept(Food food) {
+        return food.getRemainingShelfLife() > 75;
     }
 
     @Override
