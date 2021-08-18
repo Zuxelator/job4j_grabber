@@ -1,5 +1,7 @@
 package ru.job4j.design.lsp;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,12 +25,21 @@ public class Shop implements Storage {
     }
 
     @Override
+    public double getRemainingShelfLife(Food food) {
+        LocalDate createDate = food.getCreateDate();
+        LocalDate expiredDate = food.getExpiryDate();
+        LocalDate now = LocalDate.now();
+        long fullShelfLife = ChronoUnit.DAYS.between(createDate, expiredDate);
+        return ChronoUnit.DAYS.between(now, expiredDate) / (double) fullShelfLife * 100;
+    }
+
+    @Override
     public boolean accept(Food food) {
-        double shelfLife = food.getRemainingShelfLife();
+        double shelfLife = getRemainingShelfLife(food);
         if (shelfLife > 0 && shelfLife < 25) {
             food.setDiscount(20);
         }
-        return food.getRemainingShelfLife() >= 25 && food.getRemainingShelfLife() < 75;
+        return shelfLife >= 25 && shelfLife < 75;
     }
 
     @Override

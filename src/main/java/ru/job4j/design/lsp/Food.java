@@ -59,14 +59,6 @@ public class Food {
         this.discount = discount;
     }
 
-    public double getRemainingShelfLife() {
-        LocalDate createDate = this.getCreateDate();
-        LocalDate expiredDate = this.getExpiryDate();
-        LocalDate now = LocalDate.now();
-        long fullShelfLife = ChronoUnit.DAYS.between(createDate, expiredDate);
-        return ChronoUnit.DAYS.between(now, expiredDate) / (double) fullShelfLife * 100;
-    }
-
     @Override
     public String toString() {
         return "Food{" + "name='" + name + '\''
