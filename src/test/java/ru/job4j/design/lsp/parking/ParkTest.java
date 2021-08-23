@@ -7,34 +7,25 @@ public class ParkTest {
 
     @Test
     public void whenCheckIsTrue() {
-        Park park = new Park(10);
+        Park park = new Park(10, 10);
         Vehicle car = new PassengerCar();
-        assertThat(park.checkAvailableSpot(car), is(true));
+        assertThat(park.checkAvailableSpot(car, park.passengerCars), is(true));
     }
 
     @Test
     public void whenCheckIsFalse() {
-        Park park = new Park(1);
+        Park park = new Park(1, 1);
         Vehicle car = new PassengerCar();
         Vehicle car1 = new PassengerCar();
-        park.add(car);
-        assertThat(park.checkAvailableSpot(car1), is(false));
-    }
-
-    @Test
-    public void whenCheckIsFalse() {
-        Park park = new Park(1);
-        Vehicle car = new PassengerCar();
-        Vehicle car1 = new PassengerCar();
-        park.add(car);
-        assertThat(park.checkAvailableSpot(car1), is(false));
+        park.add(car, park.passengerCars);
+        assertThat(park.checkAvailableSpot(car1, park.passengerCars), is(false));
     }
 
     @Test
     public void whenAddTruck() {
-        CargoTruck cg = new CargoTruck(3);
-        ParkingService ps = new ParkingService(new Park(3), cg);
-        assertThat(ps.getSpot(0), is(cg));
+        Truck truck = new Truck(3);
+        Park park = new Park(10, 2);
+        truck.occupie(park);
+        assertThat(park.getPassengerCars()[0].getVehicle(), is(truck));
     }
-
 }
