@@ -1,6 +1,10 @@
-package ru.job4j.design.srp;
+package ru.job4j.design;
 
 import org.junit.Test;
+import ru.job4j.design.srp.Employee;
+import ru.job4j.design.srp.HRReportEngine;
+import ru.job4j.design.srp.MemStore;
+import ru.job4j.design.srp.Report;
 
 import java.util.Calendar;
 
