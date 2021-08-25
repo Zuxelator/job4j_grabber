@@ -1,8 +1,5 @@
 package ru.job4j.design.isp;
 
-import ru.job4j.design.tree.Element2;
-import ru.job4j.design.tree.Menu;
-
 public class MenuService {
     public static void main(String[] args) {
         TaskMenu menu = new TaskMenu();
