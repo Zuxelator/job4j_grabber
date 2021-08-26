@@ -13,11 +13,7 @@ public class Shop implements Storage {
     }
 
     public void add(Food food) {
-        if (map.get(food) == null) {
-            map.put(food, 1);
-        } else {
-            map.put(food, map.get(food) + 1);
-        }
+        map.merge(food, 1, Integer::sum);
     }
 
     public Integer get(Food food) {
@@ -39,7 +35,7 @@ public class Shop implements Storage {
         if (shelfLife > 0 && shelfLife < 25) {
             food.setDiscount(20);
         }
-        return shelfLife >= 25 && shelfLife < 75;
+        return shelfLife > 0 && shelfLife <= 75;
     }
 
     @Override
