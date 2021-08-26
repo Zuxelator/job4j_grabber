@@ -4,7 +4,11 @@ public class Truck implements Vehicle {
     private int size;
 
     public Truck(int size) {
-        this.size = size;
+        if (size > 1) {
+            this.size = size;
+        } else {
+            throw new IllegalArgumentException("Размер грузового автомобиля должен быть больше 1");
+        }
     }
 
     @Override
@@ -12,10 +16,4 @@ public class Truck implements Vehicle {
         return size;
     }
 
-    @Override
-    public void occupie(Parking parking) {
-         if (!parking.add(this, parking.getTrucks())) {
-             parking.add(this, parking.getPassengerCars());
-         }
-    }
 }

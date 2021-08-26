@@ -7,9 +7,4 @@ public class PassengerCar implements Vehicle {
     public int getSize() {
         return size;
     }
-
-    @Override
-    public void occupie(Parking parking) {
-        parking.add(this, parking.getPassengerCars());
-    }
 }

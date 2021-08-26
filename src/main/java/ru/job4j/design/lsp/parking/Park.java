@@ -1,41 +1,91 @@
 package ru.job4j.design.lsp.parking;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Park implements Parking {
-    public ParkingSpot[] passengerCars;
-    public ParkingSpot[] trucks;
-    private List<Vehicle> vehicles = new ArrayList<>();
+    public ParkingSpot[] spots;
+    public int amountOfPassengerSpots;
+    public int amountOfTruckSpots;
 
     public Park(int amountOfPassengerSpots, int amountOfTruckSpots) {
-        this.passengerCars = new ParkingSpot[amountOfPassengerSpots];
-        this.trucks = new ParkingSpot[amountOfTruckSpots];
+        this.amountOfPassengerSpots = amountOfPassengerSpots;
+        this.amountOfTruckSpots = amountOfTruckSpots;
+        this.spots = new ParkingSpot[amountOfPassengerSpots + amountOfTruckSpots];
+        initSpots();
+    }
 
+    public ParkingSpot[] getSpots() {
+        return spots;
+    }
+
+    public void setSpots(ParkingSpot[] spots) {
+        this.spots = spots;
+    }
+
+    private void initSpots() {
+        for (int i = 0; i < spots.length; i++) {
+            spots[i] = new ParkingSpot();
+        }
+    }
+
+    private boolean isFreeSpotsForPassengerCars() {
+        boolean rsl = false;
         for (int i = 0; i < amountOfPassengerSpots; i++) {
-            passengerCars[i] = new ParkingSpot();
+            if (!spots[i].isOccupied()) {
+                rsl = true;
+                break;
+            }
         }
+        return rsl;
+    }
 
-        for (int i = 0; i < amountOfTruckSpots; i++) {
-            trucks[i] = new ParkingSpot();
+    private int getFreeSpotForPassengerCar() {
+        int rsl = 0;
+        for (int i = 0; i < amountOfPassengerSpots; i++) {
+            if (!spots[i].isOccupied()) {
+                rsl = i;
+                break;
+            }
+        }
+        return rsl;
+    }
+
+    private void parkPassengerCar(Vehicle vehicle) {
+        if (isFreeSpotsForPassengerCars()) {
+            ParkingSpot freeSpot = spots[getFreeSpotForPassengerCar()];
+            freeSpot.setVehicle(vehicle);
+            freeSpot.setIsOccupied(true);
+        } else {
+            throw new IllegalArgumentException("На парковке нет мест для легковых машин!");
         }
     }
 
-    @Override
-    public ParkingSpot[] getPassengerCars() {
-        return passengerCars;
+    private void parkTruck(Vehicle vehicle) {
+        if (isFreeSpotsForTruck(vehicle)) {
+            ParkingSpot freeSpot = null;
+            int start = getStartOfMaxFreeSpotsRow(spots);
+            for (int i = 0; i < vehicle.getSize(); i++) {
+                freeSpot = spots[start--];
+                freeSpot.setVehicle(vehicle);
+                freeSpot.setIsOccupied(true);
+            }
+        } else {
+            throw new IllegalArgumentException("На парковке нет мест для грузовика этого размера!");
+        }
     }
 
-    @Override
-    public ParkingSpot[] getTrucks() {
-        return trucks;
+    private boolean isFreeSpotsForTruck(Vehicle vehicle) {
+        boolean rsl = false;
+        int truckSize = vehicle.getSize();
+        if (truckSize <= getMaxFreeSpotsAtRow(spots)) {
+            rsl = true;
+        }
+        return rsl;
     }
 
-    public int getMaxFreeSpotsAtRow(ParkingSpot[] list) {
+    private int getMaxFreeSpotsAtRow(ParkingSpot[] list) {
         int maxFreeSpotsAtRow = 0;
         int currentFreeSpotsAtrow = 0;
         for (int i = 0; i < list.length; i++) {
-            if (!list[i].isOccupied()) {  //если свободно
+            if (!list[i].isOccupied()) {
                 currentFreeSpotsAtrow++;
             } else {
                 if (currentFreeSpotsAtrow > maxFreeSpotsAtRow) {
@@ -52,12 +102,12 @@ public class Park implements Parking {
 
     public Integer getStartOfMaxFreeSpotsRow(ParkingSpot[] list) {
         int sizeOfLongestRow = getMaxFreeSpotsAtRow(list);
-        int start = 0;
-        for (int i = 0; i < list.length; i++) {
-            if (!list[i].isOccupied()) { //если свободно тогда начинаем считать
+        int start = list.length - 1;
+        for (int i = start; i > 0; i--) {
+            if (!list[i].isOccupied()) {
                 start = i;
                 boolean rsl = true;
-                for (int j = i; j < sizeOfLongestRow + i; j++) {
+                for (int j = i; j > list.length - sizeOfLongestRow; j--) {
                     if (list[j].isOccupied()) {
                         rsl = false;
                     }
@@ -71,27 +121,17 @@ public class Park implements Parking {
     }
 
     @Override
-    public boolean checkAvailableSpot(Vehicle vehicle, ParkingSpot[] list) {
-        return vehicle.getSize() <= getMaxFreeSpotsAtRow(list);
-    }
-
-    @Override
-    public boolean add(Vehicle vehicle, ParkingSpot[] list) {
-        boolean rsl = false;
-        if (checkAvailableSpot(vehicle, list)) {
-            vehicles.add(vehicle);
-            int start = getStartOfMaxFreeSpotsRow(list);
-            for (int i = start; i < vehicle.getSize() + start; i++) {
-                list[i].setIsOccupied(true);
-                list[i].setVehicle(vehicle);
-            }
-            rsl = true;
+    public boolean add(Vehicle vehicle) {
+        if (vehicle.getSize() == 1) {
+            parkPassengerCar(vehicle);
+        } else {
+            parkTruck(vehicle);
         }
-        return rsl;
+        return true;
     }
 
     @Override
-    public void remove(Vehicle vehicle) {
-
+    public Vehicle get(int number) {
+        return spots[number].getVehicle();
     }
 }
