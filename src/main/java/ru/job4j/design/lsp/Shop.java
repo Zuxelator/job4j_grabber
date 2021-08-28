@@ -34,6 +34,7 @@ public class Shop implements Storage {
         double shelfLife = getRemainingShelfLife(food);
         if (shelfLife > 0 && shelfLife < 25) {
             food.setDiscount(20);
+            food.setPrice(food.getPrice() / 100 * (100 - food.getDiscount()));
         }
         return shelfLife > 0 && shelfLife <= 75;
     }
