@@ -48,4 +48,15 @@ public class ParkTest {
         assertThat(park.add(car1), is(false));
         assertThat(park.getSpots()[1].isOccupied(), is(false));
     }
+
+    @Test
+    public void whenAllTruckSpotsOccupied() {
+        Park park = new Park(4, 1);
+        PassengerCar car = new PassengerCar();
+        Truck truck = new Truck(3);
+        Truck truck1 = new Truck(3);
+        park.add(car);
+        park.add(truck);
+        assertThat(park.add(truck1), is(true));
+    }
 }

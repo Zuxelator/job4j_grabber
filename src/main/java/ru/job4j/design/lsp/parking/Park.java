@@ -70,8 +70,59 @@ public class Park implements Parking {
                     break;
                 }
             }
+        } else if (isFreeSpotsForTruckOnPassengersSpots(vehicle)) {
+            int start = getStartOfMaxFreeSpotsRow();
+            rsl = true;
+            for (int i = start; i <= vehicle.getSize(); i++) {
+                spots[i].setIsOccupied(true);
+                spots[i].setVehicle(vehicle);
+            }
         }
         return rsl;
+    }
+
+    public int getStartOfMaxFreeSpotsRow() {
+        int rsl = 0;
+        int sizeOfLongestRow = getMaxFreeSpotsAtRowInPassengersSpots();
+        int count = 0;
+        int amountOfspots = spots.length - amountOfTruckSpots;
+        for (int i = 0; i < amountOfspots - 1; i++) {
+            if (!spots[i].isOccupied()) {
+                count++;
+                for (int j = i + 1; j < amountOfspots; j++) {
+                    if (!spots[j].isOccupied()) {
+                        count++;
+                    }
+                }
+                if (count == sizeOfLongestRow) {
+                    rsl = i;
+                }
+            }
+        }
+        return rsl;
+    }
+
+    private boolean isFreeSpotsForTruckOnPassengersSpots(Vehicle vehicle) {
+        return vehicle.getSize() <= getMaxFreeSpotsAtRowInPassengersSpots();
+    }
+
+    public int getMaxFreeSpotsAtRowInPassengersSpots() {
+        int maxFreeSpotsAtRow = 0;
+        int currentFreeSpotsAtrow = 0;
+        for (int i = 0; i < spots.length - amountOfTruckSpots; i++) {
+            if (!spots[i].isOccupied()) {
+                currentFreeSpotsAtrow++;
+            } else {
+                if (currentFreeSpotsAtrow > maxFreeSpotsAtRow) {
+                    maxFreeSpotsAtRow = currentFreeSpotsAtrow;
+                    currentFreeSpotsAtrow = 0;
+                }
+            }
+        }
+        if (currentFreeSpotsAtrow > maxFreeSpotsAtRow) {
+            maxFreeSpotsAtRow = currentFreeSpotsAtrow;
+        }
+        return maxFreeSpotsAtRow;
     }
 
     public boolean isFreeSpotsForTruck() {
