@@ -27,10 +27,10 @@ public class Park implements Parking {
     }
 
     private boolean isFreeSpotsForPassengerCars() {
-        boolean rsl = false;
+        boolean rsl = true;
         for (int i = 0; i < amountOfPassengerSpots; i++) {
-            if (!spots[i].isOccupied()) {
-                rsl = true;
+            if (spots[i].isOccupied()) {
+                rsl = false;
                 break;
             }
         }
@@ -48,86 +48,52 @@ public class Park implements Parking {
         return rsl;
     }
 
-    private void parkPassengerCar(Vehicle vehicle) {
+    private boolean parkPassengerCar(Vehicle vehicle) {
+        boolean rsl = false;
         if (isFreeSpotsForPassengerCars()) {
             ParkingSpot freeSpot = spots[getFreeSpotForPassengerCar()];
             freeSpot.setVehicle(vehicle);
             freeSpot.setIsOccupied(true);
-        } else {
-            throw new IllegalArgumentException("На парковке нет мест для легковых машин!");
-        }
-    }
-
-    private void parkTruck(Vehicle vehicle) {
-        if (isFreeSpotsForTruck(vehicle)) {
-            ParkingSpot freeSpot = null;
-            int start = getStartOfMaxFreeSpotsRow(spots);
-            for (int i = 0; i < vehicle.getSize(); i++) {
-                freeSpot = spots[start--];
-                freeSpot.setVehicle(vehicle);
-                freeSpot.setIsOccupied(true);
-            }
-        } else {
-            throw new IllegalArgumentException("На парковке нет мест для грузовика этого размера!");
-        }
-    }
-
-    private boolean isFreeSpotsForTruck(Vehicle vehicle) {
-        boolean rsl = false;
-        int truckSize = vehicle.getSize();
-        if (truckSize <= getMaxFreeSpotsAtRow(spots)) {
             rsl = true;
         }
         return rsl;
     }
 
-    private int getMaxFreeSpotsAtRow(ParkingSpot[] list) {
-        int maxFreeSpotsAtRow = 0;
-        int currentFreeSpotsAtrow = 0;
-        for (int i = 0; i < list.length; i++) {
-            if (!list[i].isOccupied()) {
-                currentFreeSpotsAtrow++;
-            } else {
-                if (currentFreeSpotsAtrow > maxFreeSpotsAtRow) {
-                    maxFreeSpotsAtRow = currentFreeSpotsAtrow;
+    private boolean parkTruck(Vehicle vehicle) {
+        boolean rsl = false;
+        if (isFreeSpotsForTruck()) {
+            for (int i = spots.length - 1; i >= spots.length - amountOfTruckSpots; i--) {
+                if (!spots[i].isOccupied()) {
+                    rsl = true;
+                    spots[i].setIsOccupied(true);
+                    spots[i].setVehicle(vehicle);
+                    break;
                 }
-                currentFreeSpotsAtrow = 0;
             }
         }
-        if (currentFreeSpotsAtrow > maxFreeSpotsAtRow) {
-            maxFreeSpotsAtRow = currentFreeSpotsAtrow;
-        }
-        return maxFreeSpotsAtRow;
+        return rsl;
     }
 
-    public Integer getStartOfMaxFreeSpotsRow(ParkingSpot[] list) {
-        int sizeOfLongestRow = getMaxFreeSpotsAtRow(list);
-        int start = list.length - 1;
-        for (int i = start; i > 0; i--) {
-            if (!list[i].isOccupied()) {
-                start = i;
-                boolean rsl = true;
-                for (int j = i; j > list.length - sizeOfLongestRow; j--) {
-                    if (list[j].isOccupied()) {
-                        rsl = false;
-                    }
-                }
-                if (rsl) {
-                    return i;
-                }
+    public boolean isFreeSpotsForTruck() {
+        boolean rsl = false;
+        for (int i = spots.length - 1; i >= spots.length - amountOfTruckSpots; i--) {
+            if (!spots[i].isOccupied()) {
+                rsl = true;
+                break;
             }
         }
-        return start;
+        return rsl;
     }
 
     @Override
     public boolean add(Vehicle vehicle) {
+        boolean rsl = false;
         if (vehicle.getSize() == 1) {
-            parkPassengerCar(vehicle);
+            rsl = parkPassengerCar(vehicle);
         } else {
-            parkTruck(vehicle);
+            rsl = parkTruck(vehicle);
         }
-        return true;
+        return rsl;
     }
 
     @Override

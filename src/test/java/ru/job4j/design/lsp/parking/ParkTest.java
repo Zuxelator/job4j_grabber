@@ -5,20 +5,22 @@ import static org.junit.Assert.assertThat;
 
 public class ParkTest {
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void whenNotEnoughSpotForCar() {
         Parking park = new Park(1, 1);
         PassengerCar car = new PassengerCar();
         PassengerCar car1 = new PassengerCar();
         park.add(car);
-        park.add(car1);
+        assertThat(park.add(car1), is(false));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void whenNotEnoughSpotForTruck() {
         Parking park = new Park(1, 1);
         Truck truck = new Truck(3);
-        park.add(truck);
+        Truck truck1 = new Truck(3);
+        assertThat(park.add(truck1), is (true));
+        assertThat(park.add(truck), is(false));
     }
 
     @Test
@@ -35,5 +37,15 @@ public class ParkTest {
         Park park = new Park(10, 2);
         park.add(car);
         assertThat(park.getSpots()[0].getVehicle(), is(car));
+    }
+
+    @Test
+    public void whenAllPassengersCarSpotsOccupied() {
+        Park park = new Park(1, 1);
+        PassengerCar car = new PassengerCar();
+        PassengerCar car1 = new PassengerCar();
+        park.add(car);
+        assertThat(park.add(car1), is(false));
+        assertThat(park.getSpots()[1].isOccupied(), is(false));
     }
 }
