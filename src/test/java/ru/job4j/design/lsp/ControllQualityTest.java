@@ -12,8 +12,9 @@ public class ControllQualityTest {
 
     @Test
     public void whenAddThenTrash() {
-        LocalDate create0 = LocalDate.of(2021, 8, 24);
-        LocalDate expired0 = LocalDate.of(2021, 8, 27);
+        LocalDate now = LocalDate.now();
+        LocalDate create0 = now.minusDays(14);
+        LocalDate expired0 = now.minusDays(1);
         Milk milkToTrash = new Milk("Молоко", expired0, create0, 100, 0);
         Shop shop = new Shop();
         Trash trash = new Trash();
@@ -25,8 +26,9 @@ public class ControllQualityTest {
 
     @Test
     public void whenAddThenWarehouse() {
-        LocalDate create100 = LocalDate.of(2021, 8, 28);
-        LocalDate expired100 = LocalDate.of(2021, 8, 30);
+        LocalDate now = LocalDate.now();
+        LocalDate create100 = now.minusDays(1);
+        LocalDate expired100 = now.plusDays(14);
         Milk milkToWarehouse = new Milk("Молоко", expired100, create100, 100, 0);
         Shop shop = new Shop();
         Trash trash = new Trash();
@@ -38,8 +40,9 @@ public class ControllQualityTest {
 
     @Test
     public void whenAddThenShop() {
-        LocalDate create50 = LocalDate.of(2021, 8, 26);
-        LocalDate expired50 = LocalDate.of(2021, 8, 30);
+        LocalDate now = LocalDate.now();
+        LocalDate create50 = now.minusDays(5);
+        LocalDate expired50 = now.plusDays(5);
         Milk milkToShop = new Milk("Молоко", expired50, create50, 100, 0);
         Shop shop = new Shop();
         Trash trash = new Trash();
@@ -51,8 +54,9 @@ public class ControllQualityTest {
 
     @Test
     public void whenAddThenShopWithDiscount() {
-        LocalDate create10 = LocalDate.of(2021, 8, 19);
-        LocalDate expired10 = LocalDate.of(2021, 8, 29);
+        LocalDate now = LocalDate.now();
+        LocalDate create10 = now.minusDays(13);
+        LocalDate expired10 = now.plusDays(1);
         Milk milkToShop = new Milk("Молоко", expired10, create10, 100, 0);
         Shop shop = new Shop();
         Trash trash = new Trash();
@@ -65,10 +69,11 @@ public class ControllQualityTest {
 
     @Test
     public void whenResortThenMilkToShopBreadToWarehouse() {
-        LocalDate create10 = LocalDate.of(2021, 8, 19);
-        LocalDate expired10 = LocalDate.of(2021, 8, 29);
-        LocalDate create100 = LocalDate.of(2021, 8, 28);
-        LocalDate expired100 = LocalDate.of(2021, 8, 30);
+        LocalDate now = LocalDate.now();
+        LocalDate create10 = now.minusDays(13);
+        LocalDate expired10 = now.plusDays(1);
+        LocalDate create100 = now.minusDays(1);
+        LocalDate expired100 = now.plusDays(13);
         Milk milk = new Milk("Молоко", expired10, create10, 100, 0);
         Bread bread = new Bread("Хлеб", expired100, create100, 100, 0);
         Shop shop = new Shop();
