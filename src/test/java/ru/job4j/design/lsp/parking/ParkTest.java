@@ -19,7 +19,7 @@ public class ParkTest {
         Parking park = new Park(1, 1);
         Vehicle truck = new Truck(3);
         Vehicle truck1 = new Truck(3);
-        assertThat(park.add(truck1), is (true));
+        assertThat(park.add(truck1), is(true));
         assertThat(park.add(truck), is(false));
     }
 
