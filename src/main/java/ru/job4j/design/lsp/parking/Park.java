@@ -20,6 +20,22 @@ public class Park implements Parking {
         this.spots = spots;
     }
 
+    @Override
+    public boolean add(Vehicle vehicle) {
+        boolean rsl = false;
+        if (vehicle.getSize() == 1) {
+            rsl = parkPassengerCar(vehicle);
+        } else {
+            rsl = parkTruck(vehicle);
+        }
+        return rsl;
+    }
+
+    @Override
+    public Vehicle get(int number) {
+        return spots[number].getVehicle();
+    }
+
     private void initSpots() {
         for (int i = 0; i < spots.length; i++) {
             spots[i] = new ParkingSpot();
@@ -27,25 +43,21 @@ public class Park implements Parking {
     }
 
     private boolean isFreeSpotsForPassengerCars() {
-        boolean rsl = true;
         for (int i = 0; i < amountOfPassengerSpots; i++) {
             if (spots[i].isOccupied()) {
-                rsl = false;
-                break;
+                return false;
             }
         }
-        return rsl;
+        return true;
     }
 
     private int getFreeSpotForPassengerCar() {
-        int rsl = 0;
         for (int i = 0; i < amountOfPassengerSpots; i++) {
             if (!spots[i].isOccupied()) {
-                rsl = i;
-                break;
+                return i;
             }
         }
-        return rsl;
+        return 0;
     }
 
     private boolean parkPassengerCar(Vehicle vehicle) {
@@ -81,7 +93,7 @@ public class Park implements Parking {
         return rsl;
     }
 
-    public int getStartOfMaxFreeSpotsRow() {
+    private int getStartOfMaxFreeSpotsRow() {
         int rsl = 0;
         int sizeOfLongestRow = getMaxFreeSpotsAtRowInPassengersSpots();
         int count = 0;
@@ -106,7 +118,7 @@ public class Park implements Parking {
         return vehicle.getSize() <= getMaxFreeSpotsAtRowInPassengersSpots();
     }
 
-    public int getMaxFreeSpotsAtRowInPassengersSpots() {
+    private int getMaxFreeSpotsAtRowInPassengersSpots() {
         int maxFreeSpotsAtRow = 0;
         int currentFreeSpotsAtrow = 0;
         for (int i = 0; i < spots.length - amountOfTruckSpots; i++) {
@@ -125,7 +137,7 @@ public class Park implements Parking {
         return maxFreeSpotsAtRow;
     }
 
-    public boolean isFreeSpotsForTruck() {
+    private boolean isFreeSpotsForTruck() {
         boolean rsl = false;
         for (int i = spots.length - 1; i >= spots.length - amountOfTruckSpots; i--) {
             if (!spots[i].isOccupied()) {
@@ -134,21 +146,5 @@ public class Park implements Parking {
             }
         }
         return rsl;
-    }
-
-    @Override
-    public boolean add(Vehicle vehicle) {
-        boolean rsl = false;
-        if (vehicle.getSize() == 1) {
-            rsl = parkPassengerCar(vehicle);
-        } else {
-            rsl = parkTruck(vehicle);
-        }
-        return rsl;
-    }
-
-    @Override
-    public Vehicle get(int number) {
-        return spots[number].getVehicle();
     }
 }
