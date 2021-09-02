@@ -1,7 +1,7 @@
 package ru.job4j.design.lsp.parking;
 import org.junit.Test;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 public class ParkTest {
 
@@ -11,7 +11,7 @@ public class ParkTest {
         PassengerCar car = new PassengerCar();
         PassengerCar car1 = new PassengerCar();
         park.add(car);
-        assertThat(park.add(car1), is(false));
+        assertFalse(park.add(car1));
     }
 
     @Test
@@ -19,8 +19,8 @@ public class ParkTest {
         Parking park = new Park(1, 1);
         Vehicle truck = new Truck(3);
         Vehicle truck1 = new Truck(3);
-        assertThat(park.add(truck1), is(true));
-        assertThat(park.add(truck), is(false));
+        assertTrue(park.add(truck1));
+        assertFalse(park.add(truck));
     }
 
     @Test
@@ -45,7 +45,7 @@ public class ParkTest {
         Vehicle car = new PassengerCar();
         Vehicle car1 = new PassengerCar();
         park.add(car);
-        assertThat(park.add(car1), is(false));
+        assertFalse(park.add(car1));
     }
 
     @Test
@@ -56,6 +56,6 @@ public class ParkTest {
         Vehicle truck1 = new Truck(3);
         park.add(car);
         park.add(truck);
-        assertThat(park.add(truck1), is(true));
+        assertTrue(park.add(truck1));
     }
 }
