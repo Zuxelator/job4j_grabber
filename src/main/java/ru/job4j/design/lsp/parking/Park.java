@@ -44,11 +44,11 @@ public class Park implements Parking {
 
     private boolean isFreeSpotsForPassengerCars() {
         for (int i = 0; i < amountOfPassengerSpots; i++) {
-            if (spots[i].isOccupied()) {
-                return false;
+            if (!spots[i].isOccupied()) {
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     private int getFreeSpotForPassengerCar() {

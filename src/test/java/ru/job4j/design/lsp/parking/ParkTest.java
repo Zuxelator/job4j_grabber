@@ -58,4 +58,13 @@ public class ParkTest {
         park.add(truck);
         assertTrue(park.add(truck1));
     }
+
+    @Test
+    public void whenAdd2Car() {
+        Parking park = new Park(2, 2);
+        Vehicle car = new PassengerCar();
+        Vehicle car1 = new PassengerCar();
+        park.add(car);
+        assertTrue(park.add(car1));
+    }
 }
